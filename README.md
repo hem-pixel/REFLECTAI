@@ -1,3 +1,56 @@
+# 🌱 ReflectAI
+
+ReflectAI is an AI-powered personal journaling and cognitive reflection platform designed to help users understand their thoughts, reflect on daily experiences, and turn reflections into meaningful actions.
+
+## ✨ Features
+
+- 🪞 AI-powered Reflect Mode
+- 📝 Smart Session Summaries
+- 💡 Brainstorm Mode
+- 😊 Mood Tracking
+- 🧠 AI-generated Personal Insights
+- 🌱 Personalized Micro-Habits
+- 🔍 Searchable Reflection History
+- ⭐ Favorite Reflections
+- 🔐 Secure Google Authentication
+- ☁️ Private Firestore Storage
+- 🛡️ Server-side Gemini API protection
+- 📱 Responsive Mobile, Tablet & Desktop UI
+- 🎨 Premium, calm and minimal UI/UX
+- ⚡ AI fallback and error handling
+
+## 🔒 Security
+
+ReflectAI is designed with privacy in mind.
+
+- Firebase Authentication
+- User-isolated Firestore data
+- Server-side Gemini API access
+- No API keys exposed in the frontend
+- Authentication-based database access
+- Input validation and secure API handling
+
+## 🛠️ Tech Stack
+
+- React
+- JavaScript / TypeScript
+- Firebase Authentication
+- Cloud Firestore
+- Express.js
+- Google Gemini API
+- HTML & CSS
+
+## 🎯 Goal
+
+Instead of being just another AI chatbot, ReflectAI acts as a thoughtful digital reflection companion that helps users:
+
+**Think → Reflect → Understand → Grow**
+
+## 🚀 Project Status
+
+Actively developed and continuously improving with new AI, security, and UX features.
+
+
 # ReflectAI: Gemini 3.6 Flash Journal & Reflection Studio
 
 A production-grade, user-authenticated journaling web application powered by **Gemini 3.6 Flash** and isolated **Cloud Firestore** storage.
