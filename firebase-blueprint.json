@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "Interaction": {
+      "title": "Interaction",
+      "description": "A user's private reflection or journaling session",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the reflection session"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID owning this reflection"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the reflection"
+        },
+        "initialPrompt": {
+          "type": "string",
+          "description": "Initial thought or prompt that started the session"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["reflect", "summarize", "brainstorm"],
+          "description": "Cognitive reflection mode"
+        },
+        "mood": {
+          "type": "string",
+          "description": "Optional mood associated with this reflection"
+        },
+        "favorite": {
+          "type": "boolean",
+          "description": "Whether this reflection is starred as favorite"
+        },
+        "messages": {
+          "type": "array",
+          "description": "List of multi-turn conversational messages between user and Gemini"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp when the session was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp when the session was last updated"
+        }
+      },
+      "required": ["id", "userId", "title", "mode", "messages", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/interactions/{interactionId}": {
+      "schema": "Interaction",
+      "description": "User-isolated reflection and journaling sessions"
+    }
+  }
+}

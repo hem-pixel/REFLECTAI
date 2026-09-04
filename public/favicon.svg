@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <!-- Background squircle gradient -->
+    <linearGradient id="terracottaBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#964b18" />
+      <stop offset="100%" stop-color="#7d3b0e" />
+    </linearGradient>
+    <linearGradient id="warmSun" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fdfbf7" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#f4ede1" stop-opacity="0.05" />
+    </linearGradient>
+  </defs>
+
+  <!-- App Icon Squircle Base (#8B4513 primary brand color) -->
+  <rect x="4" y="4" width="120" height="120" rx="30" ry="30" fill="url(#terracottaBg)" />
+  <rect x="4" y="4" width="120" height="120" rx="30" ry="30" stroke="#fcf9f4" stroke-opacity="0.15" stroke-width="1.5" fill="none" />
+
+  <!-- Soft aura behind head -->
+  <circle cx="62" cy="65" r="42" fill="url(#warmSun)" />
+
+  <!-- Head silhouette (facing right) in soft cream #F8F3E9 -->
+  <g fill="#F8F3E9">
+    <!-- Human Head Silhouette Path -->
+    <path d="
+      M 58 102
+      C 54 100 48 93 45 84
+      C 41 73 40 62 45 52
+      C 50 42 59 34 71 34
+      C 80 34 88 38 94 45
+      C 97 49 99 54 99 58
+      C 99 61 97 63 96 65
+      C 97 66 102 70 104 73
+      C 105 74 104 76 101 77
+      C 99 78 97 78 97 80
+      C 98 81 100 83 100 84
+      C 100 86 97 87 96 88
+      C 97 90 99 92 98 95
+      C 97 98 94 100 90 101
+      C 84 102 79 97 77 92
+      C 75 92 73 97 69 100
+      C 65 103 61 103 58 102 Z
+    " />
+  </g>
+
+  <!-- Growing Plant cut out / in terracotta #8B4513 within the head -->
+  <g fill="#8B4513" stroke="#8B4513" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Central curved stem -->
+    <path d="M 64 96 C 63 82 61 68 67 52 C 69 46 72 41 74 37" fill="none" stroke-width="3" />
+    
+    <!-- Top leaf -->
+    <path d="M 74 37 C 76 33 79 32 82 34 C 82 37 80 41 76 43 C 74 41 73 39 74 37 Z" stroke-width="0.5" />
+    
+    <!-- Upper right leaf (facing forehead) -->
+    <path d="M 68 53 C 73 50 80 50 85 53 C 84 57 79 61 72 60 C 69 57 68 54 68 53 Z" stroke-width="0.5" />
+    
+    <!-- Middle left leaf (facing occiput) -->
+    <path d="M 64 64 C 59 60 52 61 47 65 C 49 69 54 72 61 70 C 63 67 64 65 64 64 Z" stroke-width="0.5" />
+    
+    <!-- Lower right leaf -->
+    <path d="M 63 74 C 68 72 75 73 79 77 C 77 81 72 84 66 82 C 64 79 63 76 63 74 Z" stroke-width="0.5" />
+    
+    <!-- Bottom left leaf -->
+    <path d="M 63 85 C 59 83 54 84 50 88 C 52 92 57 93 63 91 C 64 88 64 86 63 85 Z" stroke-width="0.5" />
+  </g>
+
+  <!-- Sparkle Star (✦) near forehead in #F8F3E9 -->
+  <path d="
+    M 107 46
+    Q 107 51 102 51
+    Q 107 51 107 56
+    Q 107 51 112 51
+    Q 107 51 107 46 Z
+  " fill="#F8F3E9" />
+</svg>

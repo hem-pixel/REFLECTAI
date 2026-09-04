@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- Background subtle radial glow -->
+    <radialGradient id="mark-bg" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#f5ede3" />
+      <stop offset="65%" stop-color="#f8f3e9" />
+      <stop offset="100%" stop-color="#f2ebe1" />
+    </radialGradient>
+    
+    <!-- Aura glow behind head -->
+    <radialGradient id="mark-aura" cx="48%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#dfcfbe" stop-opacity="0.9" />
+      <stop offset="60%" stop-color="#ebdcd0" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#f8f3e9" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Head silhouette gradient -->
+    <linearGradient id="mark-head-grad" x1="20%" y1="15%" x2="85%" y2="85%">
+      <stop offset="0%" stop-color="#9a4d19" />
+      <stop offset="50%" stop-color="#8B4513" />
+      <stop offset="100%" stop-color="#72360e" />
+    </linearGradient>
+
+    <!-- Star illumination gradient -->
+    <radialGradient id="mark-star-grad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="40%" stop-color="#fff8f0" />
+      <stop offset="100%" stop-color="#d4af37" />
+    </radialGradient>
+
+    <!-- Plant leaf gradient -->
+    <linearGradient id="mark-leaf-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fbf7f0" />
+      <stop offset="100%" stop-color="#ffffff" />
+    </linearGradient>
+  </defs>
+
+  <!-- Ambient Aura -->
+  <circle cx="128" cy="128" r="105" fill="url(#mark-aura)" />
+
+  <!-- Head Silhouette (Right-Facing Profile with mind opening) -->
+  <g transform="translate(-12, -8) scale(0.68)">
+    <path
+      d="M 186 34
+         C 136 34, 100 72, 100 128
+         C 100 166, 122 200, 148 218
+         C 148 234, 152 258, 158 284
+         L 224 284
+         C 222 264, 220 244, 220 232
+         C 234 228, 248 214, 252 198
+         C 254 190, 248 182, 240 182
+         C 230 182, 222 188, 220 196
+         C 218 204, 210 212, 202 214
+         C 196 200, 200 178, 208 164
+         C 214 154, 228 148, 244 146
+         C 266 143, 282 128, 280 106
+         C 278 86, 260 76, 244 76
+         C 238 76, 230 78, 224 82
+         C 222 58, 208 34, 186 34 Z"
+      fill="url(#mark-head-grad)"
+      filter="drop-shadow(0 4px 8px rgba(90,40,10,0.18))"
+    />
+
+    <!-- Organic Plant Branch -->
+    <path
+      d="M 182 180
+         Q 184 130 196 92
+         Q 206 58 214 38"
+      stroke="#fbf7f0"
+      stroke-width="5"
+      stroke-linecap="round"
+      fill="none"
+    />
+
+    <!-- Leaf 1 (Top tip leaf) -->
+    <path
+      d="M 214 38
+         C 218 26, 232 22, 236 30
+         C 236 42, 224 46, 214 38 Z"
+      fill="url(#mark-leaf-grad)"
+    />
+
+    <!-- Leaf 2 (Upper right leaf) -->
+    <path
+      d="M 206 62
+         C 222 54, 238 64, 232 78
+         C 220 84, 206 72, 206 62 Z"
+      fill="url(#mark-leaf-grad)"
+    />
+
+    <!-- Leaf 3 (Upper left leaf) -->
+    <path
+      d="M 198 82
+         C 180 72, 168 84, 176 96
+         C 186 100, 198 92, 198 82 Z"
+      fill="url(#mark-leaf-grad)"
+    />
+
+    <!-- Leaf 4 (Middle right leaf) -->
+    <path
+      d="M 192 110
+         C 210 104, 222 116, 214 128
+         C 202 132, 190 122, 192 110 Z"
+      fill="url(#mark-leaf-grad)"
+    />
+
+    <!-- Leaf 5 (Lower left leaf) -->
+    <path
+      d="M 186 136
+         C 170 130, 162 142, 168 152
+         C 178 156, 188 148, 186 136 Z"
+      fill="url(#mark-leaf-grad)"
+    />
+
+    <!-- Sparkle Star -->
+    <g transform="translate(256, 60)">
+      <circle cx="0" cy="0" r="14" fill="#ffffff" fill-opacity="0.4" />
+      <path
+        d="M 0 -18 Q 2 -4 18 0 Q 2 4 0 18 Q -2 4 -18 0 Q -2 -4 0 -18 Z"
+        fill="url(#mark-star-grad)"
+      />
+      <circle cx="0" cy="0" r="3" fill="#ffffff" />
+    </g>
+  </g>
+</svg>

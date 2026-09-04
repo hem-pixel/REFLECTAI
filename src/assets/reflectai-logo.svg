@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background subtle radial glow -->
+    <radialGradient id="bg-glow" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#f5ede3" />
+      <stop offset="65%" stop-color="#f8f3e9" />
+      <stop offset="100%" stop-color="#f2ebe1" />
+    </radialGradient>
+    
+    <!-- Aura glow behind head -->
+    <radialGradient id="aura-glow" cx="48%" cy="42%" r="48%">
+      <stop offset="0%" stop-color="#dfcfbe" stop-opacity="0.9" />
+      <stop offset="60%" stop-color="#ebdcd0" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#f8f3e9" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Head silhouette gradient -->
+    <linearGradient id="head-grad" x1="20%" y1="15%" x2="85%" y2="85%">
+      <stop offset="0%" stop-color="#9a4d19" />
+      <stop offset="50%" stop-color="#8B4513" />
+      <stop offset="100%" stop-color="#72360e" />
+    </linearGradient>
+
+    <!-- Star illumination gradient -->
+    <radialGradient id="star-grad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="40%" stop-color="#fff8f0" />
+      <stop offset="100%" stop-color="#d4af37" />
+    </radialGradient>
+
+    <!-- Plant leaf gradient -->
+    <linearGradient id="leaf-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fbf7f0" />
+      <stop offset="100%" stop-color="#ffffff" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="48" fill="url(#bg-glow)" />
+
+  <!-- Central Emblem Group -->
+  <g transform="translate(0, -16)">
+    <!-- Ambient Halo Aura -->
+    <circle cx="256" cy="206" r="148" fill="url(#aura-glow)" />
+    <circle cx="256" cy="206" r="116" fill="#eeded0" fill-opacity="0.35" />
+
+    <!-- Head Silhouette (Right-Facing Profile with mind opening) -->
+    <path
+      d="M 236 84
+         C 186 84, 150 122, 150 178
+         C 150 216, 172 250, 198 268
+         C 198 284, 202 308, 208 334
+         L 274 334
+         C 272 314, 270 294, 270 282
+         C 284 278, 298 264, 302 248
+         C 304 240, 298 232, 290 232
+         C 280 232, 272 238, 270 246
+         C 268 254, 260 262, 252 264
+         C 246 250, 250 228, 258 214
+         C 264 204, 278 198, 294 196
+         C 316 193, 332 178, 330 156
+         C 328 136, 310 126, 294 126
+         C 288 126, 280 128, 274 132
+         C 272 108, 258 84, 236 84 Z"
+      fill="url(#head-grad)"
+      filter="drop-shadow(0 6px 12px rgba(90,40,10,0.18))"
+    />
+
+    <!-- Organic Plant Branch (Sprouting Mind Growth) -->
+    <!-- Central curved stem -->
+    <path
+      d="M 232 230
+         Q 234 180 246 142
+         Q 256 108 264 88"
+      stroke="#fbf7f0"
+      stroke-width="5"
+      stroke-linecap="round"
+      fill="none"
+    />
+
+    <!-- Leaf 1 (Top tip leaf) -->
+    <path
+      d="M 264 88
+         C 268 76, 282 72, 286 80
+         C 286 92, 274 96, 264 88 Z"
+      fill="url(#leaf-grad)"
+    />
+
+    <!-- Leaf 2 (Upper right leaf) -->
+    <path
+      d="M 256 112
+         C 272 104, 288 114, 282 128
+         C 270 134, 256 122, 256 112 Z"
+      fill="url(#leaf-grad)"
+    />
+
+    <!-- Leaf 3 (Upper left leaf) -->
+    <path
+      d="M 248 132
+         C 230 122, 218 134, 226 146
+         C 236 150, 248 142, 248 132 Z"
+      fill="url(#leaf-grad)"
+    />
+
+    <!-- Leaf 4 (Middle right leaf) -->
+    <path
+      d="M 242 160
+         C 260 154, 272 166, 264 178
+         C 252 182, 240 172, 242 160 Z"
+      fill="url(#leaf-grad)"
+    />
+
+    <!-- Leaf 5 (Lower left leaf) -->
+    <path
+      d="M 236 186
+         C 220 180, 212 192, 218 202
+         C 228 206, 238 198, 236 186 Z"
+      fill="url(#leaf-grad)"
+    />
+
+    <!-- Four-Point Illumination Sparkle Star (✦) -->
+    <g transform="translate(306, 110)">
+      <!-- Outer glow -->
+      <circle cx="0" cy="0" r="14" fill="#ffffff" fill-opacity="0.4" />
+      <!-- Star shape -->
+      <path
+        d="M 0 -18
+           Q 2 -4 18 0
+           Q 2 4 0 18
+           Q -2 4 -18 0
+           Q -2 -4 0 -18 Z"
+        fill="url(#star-grad)"
+        filter="drop-shadow(0 2px 4px rgba(212,175,55,0.4))"
+      />
+      <!-- Center bright core -->
+      <circle cx="0" cy="0" r="3" fill="#ffffff" />
+    </g>
+
+    <!-- Secondary small sparkle -->
+    <g transform="translate(180, 118) scale(0.48)">
+      <path
+        d="M 0 -16 Q 2 -3 16 0 Q 2 3 0 16 Q -2 3 -16 0 Q -2 -3 0 -16 Z"
+        fill="#ffffff"
+        fill-opacity="0.85"
+      />
+    </g>
+  </g>
+
+  <!-- Typography Brand Lockup -->
+  <!-- "ReflectAI" Wordmark -->
+  <text
+    x="256"
+    y="396"
+    text-anchor="middle"
+    font-family="'Playfair Display', Georgia, 'Times New Roman', serif"
+    font-size="44"
+    font-weight="600"
+    letter-spacing="-0.5"
+  >
+    <tspan fill="#3E2723">Reflect</tspan><tspan fill="#8B4513">AI</tspan>
+  </text>
+
+  <!-- Tagline: "THINK • REFLECT • GROW" -->
+  <text
+    x="256"
+    y="432"
+    text-anchor="middle"
+    font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+    font-size="14.5"
+    font-weight="600"
+    letter-spacing="5.5"
+    fill="#A67C52"
+  >
+    THINK • REFLECT • GROW
+  </text>
+
+  <!-- Elegant divider underline accent -->
+  <rect x="216" y="456" width="80" height="2" rx="1" fill="#8B4513" fill-opacity="0.25" />
+</svg>
