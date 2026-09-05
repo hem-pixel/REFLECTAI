@@ -2,12 +2,11 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
-import { createServer as createViteServer } from 'vite';
 
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 // 1. Top-Level Request Deserialization (Ordering Guarantee)
 app.use(express.json({ limit: '10mb' }));
@@ -109,8 +108,11 @@ function getGenAI(): GoogleGenAI {
   return new GoogleGenAI({ apiKey });
 }
 
+// Create modular API Router
+const apiRouter = express.Router();
+
 // API Health Check
-app.get('/api/health', (_req: Request, res: Response) => {
+apiRouter.get('/health', (_req: Request, res: Response) => {
   res.json({
     status: 'ok',
     hasGeminiKey: Boolean(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'MY_GEMINI_API_KEY'),
@@ -119,7 +121,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
 });
 
 // AI Reflection and Conversational Journaling Endpoint
-app.post('/api/gemini/reflect', async (req: Request, res: Response) => {
+apiRouter.post('/gemini/reflect', async (req: Request, res: Response) => {
   const reqStart = Date.now();
   perfLog('backend request received');
 
@@ -301,7 +303,7 @@ RULES:
 });
 
 // Dedicated Title Generator for Journal Sessions
-app.post('/api/gemini/title', async (req: Request, res: Response) => {
+apiRouter.post('/gemini/title', async (req: Request, res: Response) => {
   try {
     const body = req.body && typeof req.body === 'object' ? req.body : {};
     const entry = typeof body.entry === 'string' ? body.entry.trim() : '';
@@ -327,7 +329,7 @@ app.post('/api/gemini/title', async (req: Request, res: Response) => {
 });
 
 // Personalized Micro-Habit Generator ("One small step for today")
-app.post('/api/gemini/microhabit', async (req: Request, res: Response) => {
+apiRouter.post('/gemini/microhabit', async (req: Request, res: Response) => {
   try {
     const body = req.body && typeof req.body === 'object' ? req.body : {};
     const reflectionText = typeof body.reflection === 'string' ? body.reflection.trim() : '';
@@ -369,7 +371,7 @@ Requirements:
 });
 
 // AI Insights Synthesis Endpoint
-app.post('/api/gemini/insights', async (req: Request, res: Response) => {
+apiRouter.post('/gemini/insights', async (req: Request, res: Response) => {
   try {
     const body = req.body && typeof req.body === 'object' ? req.body : {};
     const reflections = Array.isArray(body.reflections) ? body.reflections : [];
@@ -433,11 +435,16 @@ Format response as valid JSON matching this schema:
   }
 });
 
+// Mount modular API router at both /api and root for comprehensive deployment compatibility
+app.use('/api', apiRouter);
+app.use('/', apiRouter);
+
 async function start() {
   // Static assets from public directory (favicons, official logos)
   app.use(express.static(path.join(process.cwd(), 'public')));
 
   if (process.env.NODE_ENV !== 'production') {
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
@@ -456,7 +463,13 @@ async function start() {
   });
 }
 
-start().catch((err) => {
-  console.error('Failed to start server:', err);
-  process.exit(1);
-});
+// Only launch standalone server if not running in a serverless environment (e.g. Vercel)
+if (!process.env.VERCEL) {
+  start().catch((err) => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
+  });
+}
+
+export default app;
+export { app };
