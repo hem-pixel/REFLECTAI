@@ -1,9 +1,57 @@
-import {
-  getGenAI,
-  generateContentWithFallback,
-  readJsonBody,
-  sendJson,
-} from '../_gemini';
+import dotenv from 'dotenv';
+import { GoogleGenAI } from '@google/genai';
+
+dotenv.config();
+
+function getGenAI(): GoogleGenAI {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
+    throw new Error('GEMINI_API_KEY environment variable is not configured.');
+  }
+  return new GoogleGenAI({ apiKey });
+}
+
+function sendJson(res: any, statusCode: number, data: any) {
+  if (res.headersSent) return;
+  res.statusCode = statusCode;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(data));
+}
+
+async function readJsonBody(req: any): Promise<any> {
+  if (req.body !== undefined && req.body !== null) {
+    if (typeof req.body === 'object') return req.body;
+    if (typeof req.body === 'string') {
+      try {
+        return JSON.parse(req.body);
+      } catch {
+        return {};
+      }
+    }
+  }
+
+  return new Promise((resolve) => {
+    let data = '';
+    req.on('data', (chunk: any) => {
+      data += chunk;
+    });
+    req.on('end', () => {
+      try {
+        resolve(data ? JSON.parse(data) : {});
+      } catch {
+        resolve({});
+      }
+    });
+    req.on('error', () => resolve({}));
+  });
+}
+
+const MODEL_FALLBACK_LADDER = [
+  'gemini-3.6-flash',
+  'gemini-3.1-flash-lite',
+  'gemini-flash-latest',
+  'gemini-3.7-flash',
+];
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
@@ -34,8 +82,20 @@ export default async function handler(req: any, res: any) {
       .join('\n---\n');
 
     const ai = getGenAI();
-    const result = await generateContentWithFallback(ai, {
-      systemInstruction: `You are a friendly reflection assistant for ReflectAI.
+    let text = '';
+
+    for (const model of MODEL_FALLBACK_LADDER) {
+      try {
+        const response = await ai.models.generateContent({
+          model,
+          contents: [
+            {
+              role: 'user',
+              parts: [{ text: `Here are the recent reflections to synthesize:\n${sample}` }],
+            },
+          ],
+          config: {
+            systemInstruction: `You are a friendly reflection assistant for ReflectAI.
 Analyze the user's journal notes, moods, and titles.
 Provide a clear, friendly summary using VERY SIMPLE, EVERYDAY WORDS in JSON format.
 Rules:
@@ -50,21 +110,19 @@ Format response as valid JSON matching this schema:
   "positivePatterns": ["string", "string"],
   "observations": ["string", "string"]
 }`,
-      contents: [
-        {
-          role: 'user',
-          parts: [
-            {
-              text: `Here are the recent reflections to synthesize:\n${sample}`,
-            },
-          ],
-        },
-      ],
-      maxOutputTokens: 400,
-    });
+            maxOutputTokens: 400,
+            temperature: 0.7,
+          },
+        });
+        text = response.text || '';
+        break;
+      } catch (err: any) {
+        console.warn(`[Gemini Insights] Error with ${model}:`, err?.message);
+      }
+    }
 
     try {
-      const parsed = JSON.parse(result.text.replace(/```json\n?|```/g, '').trim());
+      const parsed = JSON.parse(text.replace(/```json\n?|```/g, '').trim());
       return sendJson(res, 200, parsed);
     } catch {
       return sendJson(res, 200, {
