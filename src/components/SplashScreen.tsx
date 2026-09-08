@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import reflectAiLogo from '../assets/reflectai-logo.png';
+import circleLogo from '../assets/reflectai-circle-logo.svg';
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -7,43 +7,29 @@ interface SplashScreenProps {
 }
 
 /**
- * Official ReflectAI Startup Splash Screen.
+ * Clean, minimal ReflectAI Splash Screen.
  *
- * Guaranteed Startup Timeline:
- * - 0ms: Cream background (#fcf9f4) appears.
- * - 100ms: Logo starts appearing.
- * - 100ms → 600ms: Logo fades in and scales (opacity: 0 → 1, scale: 0.85 → 1).
- * - 600ms → 900ms: Subtle logo glow and pulse (scale: 1.03, soft aura glow).
- * - 900ms: ReflectAI wordmark appears.
- * - 1000ms: "Think • Reflect • Grow" tagline appears.
- * - 1200ms: Hold briefly.
- * - 1200ms → 1600ms: Splash screen smoothly fades out (opacity: 1 → 0).
- * - 1600ms: Callback onComplete() unmounts splash screen and reveals application.
- *
- * Fully respects prefers-reduced-motion and guards against layout shift or flicker.
+ * Requirements:
+ * - Full-screen warm cream / off-white background.
+ * - Perfectly centered circular ReflectAI logo ONLY (no cards, boxes, frames, or text).
+ * - Smooth fade-in + slight scale (90% -> 100%).
+ * - Subtle breathing / soft aura effect.
+ * - Stays visible for ~1.3-1.6 seconds, then smoothly fades out.
+ * - Responsive: Mobile ~130px, Tablet ~160px, Desktop ~185px.
  */
 export const SplashScreen: React.FC<SplashScreenProps> = ({
   onComplete,
-  minDurationMs = 1200,
+  minDurationMs = 1300,
 }) => {
-  // Animation milestone states
-  const [logoVisible, setLogoVisible] = useState(false);
-  const [logoPulsing, setLogoPulsing] = useState(false);
-  const [titleVisible, setTitleVisible] = useState(false);
-  const [taglineVisible, setTaglineVisible] = useState(false);
+  const [logoMounted, setLogoMounted] = useState(false);
   const [screenFadingOut, setScreenFadingOut] = useState(false);
-
-  // Check prefers-reduced-motion
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [imgSrc, setImgSrc] = useState<string>(circleLogo || '/reflectai-circle-logo.svg');
 
-  // Fallback image source in case bundler URL differs in preview
-  const [imgSrc, setImgSrc] = useState<string>(reflectAiLogo || '/reflectai-logo.png');
-
-  // Track if onComplete has been called to prevent duplicate triggers
   const completedRef = useRef(false);
 
   useEffect(() => {
-    // Detect prefers-reduced-motion
+    // Respect accessibility prefers-reduced-motion
     if (typeof window !== 'undefined' && window.matchMedia) {
       const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
       setReducedMotion(mediaQuery.matches);
@@ -51,45 +37,23 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 
     const timers: NodeJS.Timeout[] = [];
 
-    // 100ms: Logo starts appearing (100ms -> 600ms)
+    // Trigger smooth fade-in + scale from 90% to 100% shortly after mount
     timers.push(
       setTimeout(() => {
-        setLogoVisible(true);
-      }, 100)
+        setLogoMounted(true);
+      }, 50)
     );
 
-    // 600ms -> 900ms: Subtle logo glow & pulse
-    timers.push(
-      setTimeout(() => {
-        setLogoPulsing(true);
-      }, 600)
-    );
-
-    // 900ms: ReflectAI wordmark appears
-    timers.push(
-      setTimeout(() => {
-        setLogoPulsing(false);
-        setTitleVisible(true);
-      }, 900)
-    );
-
-    // 1000ms: "Think • Reflect • Grow" tagline appears
-    timers.push(
-      setTimeout(() => {
-        setTaglineVisible(true);
-      }, 1000)
-    );
-
-    // 1200ms: Hold briefly, then initiate fade out (1200ms -> 1600ms)
-    const fadeOutStart = Math.max(1200, minDurationMs);
+    // After ~1.3s, start smooth fade-out
+    const fadeOutStartTime = Math.max(1300, minDurationMs);
     timers.push(
       setTimeout(() => {
         setScreenFadingOut(true);
-      }, fadeOutStart)
+      }, fadeOutStartTime)
     );
 
-    // 1600ms: Splash sequence finished, reveal application
-    const totalDuration = fadeOutStart + 400; // 400ms fadeout
+    // When fade-out completes (~1.65s total), unmount splash screen
+    const totalDuration = fadeOutStartTime + 350;
     timers.push(
       setTimeout(() => {
         if (!completedRef.current) {
@@ -109,114 +73,91 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
       id="reflectai-splash-screen"
       role="status"
       aria-label="ReflectAI loading"
-      className="fixed inset-0 z-[999999] flex flex-col items-center justify-center select-none px-4"
+      className="fixed inset-0 z-[999999] flex items-center justify-center select-none"
       style={{
         backgroundColor: '#fcf9f4',
-        backgroundImage: 'radial-gradient(ellipse at 50% 45%, #f5ece2 0%, #fcf9f4 75%)',
+        backgroundImage: 'radial-gradient(ellipse at 50% 50%, #f5ece2 0%, #fcf9f4 75%)',
         opacity: screenFadingOut ? 0 : 1,
-        transition: 'opacity 400ms cubic-bezier(0.22, 1, 0.36, 1)',
+        transition: 'opacity 350ms cubic-bezier(0.22, 1, 0.36, 1)',
         pointerEvents: screenFadingOut ? 'none' : 'auto',
       }}
     >
-      {/* Centered Brand Column */}
-      <div className="flex flex-col items-center text-center max-w-xs sm:max-w-sm md:max-w-md w-full">
-        {/* Logo Container with 100ms-600ms fade/scale and 600ms-900ms subtle glow/pulse */}
-        <div className="relative mb-5 sm:mb-6 flex items-center justify-center">
-          {/* Subtle Ambient Halo Glow */}
-          <div
-            className="absolute inset-0 rounded-full blur-2xl bg-[#ebdcd0]/70 -z-10 pointer-events-none transition-all duration-300 ease-out"
-            style={{
-              transform: logoPulsing && !reducedMotion ? 'scale(1.35)' : 'scale(1.15)',
-              opacity: logoVisible ? 0.75 : 0,
-            }}
-            aria-hidden="true"
-          />
+      {/* Scoped CSS animations for clean, hardware-accelerated breathing effect */}
+      <style>{`
+        @keyframes reflectai-breathing-glow {
+          0%, 100% {
+            transform: scale(1.12);
+            opacity: 0.35;
+          }
+          50% {
+            transform: scale(1.24);
+            opacity: 0.55;
+          }
+        }
+        @keyframes reflectai-breathing-logo {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.02);
+          }
+        }
+        .reflectai-glow-anim {
+          animation: reflectai-breathing-glow 2.4s ease-in-out infinite;
+        }
+        .reflectai-breathe-anim {
+          animation: reflectai-breathing-logo 2.4s ease-in-out infinite;
+        }
+      `}</style>
 
-          {/* Official ReflectAI Logo Asset */}
-          <div
-            className="w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 flex items-center justify-center"
-            style={{
-              opacity: logoVisible ? 1 : 0,
-              transform: reducedMotion
-                ? 'none'
-                : logoPulsing
-                ? 'scale(1.03)'
-                : logoVisible
-                ? 'scale(1)'
-                : 'scale(0.85)',
-              transition: reducedMotion
-                ? 'opacity 500ms ease-out'
-                : 'opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1)',
-              filter: logoPulsing && !reducedMotion ? 'drop-shadow(0 8px 18px rgba(139, 69, 19, 0.22))' : 'drop-shadow(0 4px 10px rgba(90, 40, 10, 0.12))',
-            }}
-          >
-            <img
-              id="reflectai-splash-logo-img"
-              src={imgSrc}
-              alt="ReflectAI Official Logo"
-              onError={() => {
-                // If bundler relative path fails, try root-relative fallback
-                if (imgSrc !== '/reflectai-logo.png') {
-                  setImgSrc('/reflectai-logo.png');
-                }
-              }}
-              className="w-full h-full object-contain select-none pointer-events-none rounded-3xl"
-              style={{
-                aspectRatio: '1 / 1',
-              }}
-            />
-          </div>
-        </div>
-
-        {/* 900ms: ReflectAI Wordmark */}
-        <h1
-          id="reflectai-splash-title"
-          className="font-serif text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#3E2723] leading-none mb-2.5"
-          style={{
-            opacity: titleVisible ? 1 : 0,
-            transform: reducedMotion
-              ? 'none'
-              : titleVisible
-              ? 'translateY(0)'
-              : 'translateY(8px)',
-            transition: reducedMotion
-              ? 'opacity 350ms ease-out'
-              : 'opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), transform 400ms cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-        >
-          <span>Reflect</span>
-          <span className="text-[#8B4513] font-serif">AI</span>
-        </h1>
-
-        {/* 1000ms: "Think • Reflect • Grow" Tagline */}
-        <p
-          id="reflectai-splash-tagline"
-          className="font-sans text-xs sm:text-sm font-semibold tracking-[0.24em] uppercase text-[#A67C52] mb-6"
-          style={{
-            opacity: taglineVisible ? 1 : 0,
-            transform: reducedMotion
-              ? 'none'
-              : taglineVisible
-              ? 'translateY(0)'
-              : 'translateY(6px)',
-            transition: reducedMotion
-              ? 'opacity 300ms ease-out'
-              : 'opacity 350ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-        >
-          Think <span className="text-[#8B4513]/60">•</span> Reflect{' '}
-          <span className="text-[#8B4513]/60">•</span> Grow
-        </p>
-
-        {/* Subtle Minimal Accent Line */}
+      {/* Centered Circular Logo Container */}
+      <div className="relative flex items-center justify-center">
+        {/* Subtle breathing glow / soft ambient aura */}
         <div
-          className="w-24 sm:w-28 h-[2px] bg-[#e2d7cb] rounded-full overflow-hidden relative"
+          className={`absolute inset-0 rounded-full pointer-events-none transition-opacity duration-700 ease-in-out -z-10 ${
+            logoMounted && !reducedMotion ? 'reflectai-glow-anim' : ''
+          }`}
           style={{
-            opacity: taglineVisible ? 0.8 : 0,
-            transition: 'opacity 300ms ease-out',
+            opacity: logoMounted ? 0.45 : 0,
+            filter: 'blur(26px)',
+            backgroundColor: '#c98a58',
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Circular Logo Element */}
+        <div
+          className={`w-[130px] h-[130px] sm:w-[160px] sm:h-[160px] md:w-[185px] md:h-[185px] aspect-square rounded-full flex items-center justify-center select-none ${
+            logoMounted && !reducedMotion ? 'reflectai-breathe-anim' : ''
+          }`}
+          style={{
+            opacity: logoMounted ? 1 : 0,
+            transform: reducedMotion
+              ? 'none'
+              : logoMounted
+              ? 'scale(1)'
+              : 'scale(0.90)',
+            transition: reducedMotion
+              ? 'opacity 500ms ease-out'
+              : 'opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          <div className="h-full w-full bg-gradient-to-r from-[#8B4513] via-[#A67C52] to-[#8B4513] rounded-full" />
+          <img
+            id="reflectai-splash-logo-img"
+            src={imgSrc}
+            alt="ReflectAI"
+            onError={() => {
+              // Fallback cascade: SVG -> PNG -> static public path
+              if (imgSrc !== '/reflectai-circle-logo.png') {
+                setImgSrc('/reflectai-circle-logo.png');
+              }
+            }}
+            className="w-full h-full object-contain rounded-full select-none pointer-events-none"
+            style={{
+              aspectRatio: '1 / 1',
+              filter: 'drop-shadow(0 6px 16px rgba(139, 69, 19, 0.16))',
+            }}
+          />
         </div>
       </div>
     </div>

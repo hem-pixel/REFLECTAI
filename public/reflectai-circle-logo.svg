@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="subtleAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Perfect Circular Badge in Warm Terracotta Brown (#8B4513) -->
+  <circle cx="256" cy="256" r="256" fill="#8B4513" />
+  <circle cx="256" cy="256" r="248" fill="url(#subtleAura)" />
+
+  <!-- Face / Head Silhouette (Facing Right) in Pure White -->
+  <g fill="#FFFFFF">
+    <path d="
+      M 232 408
+      C 216 400 192 372 180 336
+      C 164 292 160 248 180 208
+      C 200 168 236 136 284 136
+      C 320 136 352 152 376 180
+      C 388 196 396 216 396 232
+      C 396 244 388 252 384 260
+      C 388 264 408 280 416 292
+      C 420 296 416 304 404 308
+      C 396 312 388 312 388 320
+      C 392 324 400 332 400 336
+      C 400 344 388 348 384 352
+      C 388 360 396 368 392 380
+      C 388 392 376 400 360 404
+      C 336 408 316 388 308 368
+      C 300 368 292 388 276 400
+      C 260 412 244 412 232 408 Z
+    " />
+  </g>
+
+  <!-- Plant Stem & Leaves Inside Head in Terracotta Brown (#8B4513) -->
+  <g fill="#8B4513" stroke="#8B4513" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Central curved stem -->
+    <path d="M 256 384 C 252 328 244 272 268 208 C 276 184 288 164 296 148" fill="none" stroke-width="12" />
+    
+    <!-- Top leaf -->
+    <path d="M 296 148 C 304 132 316 128 328 136 C 328 148 320 164 304 172 C 296 164 292 156 296 148 Z" stroke-width="2" />
+    
+    <!-- Upper right leaf (facing forehead) -->
+    <path d="M 272 212 C 292 200 320 200 340 212 C 336 228 316 244 288 240 C 276 228 272 216 272 212 Z" stroke-width="2" />
+    
+    <!-- Middle left leaf (facing occiput) -->
+    <path d="M 256 256 C 236 240 208 244 188 260 C 196 276 216 288 244 280 C 252 268 256 260 256 256 Z" stroke-width="2" />
+    
+    <!-- Lower right leaf -->
+    <path d="M 252 296 C 272 288 300 292 316 308 C 308 324 288 336 264 328 C 256 316 252 304 252 296 Z" stroke-width="2" />
+    
+    <!-- Bottom left leaf -->
+    <path d="M 252 340 C 236 332 216 336 200 352 C 208 368 228 372 252 364 C 256 352 256 344 252 340 Z" stroke-width="2" />
+  </g>
+
+  <!-- Sparkle Star (✦) near Forehead in Pure White (#FFFFFF) -->
+  <path d="
+    M 428 184
+    Q 428 204 408 204
+    Q 428 204 428 224
+    Q 428 204 448 204
+    Q 428 204 428 184 Z
+  " fill="#FFFFFF" />
+</svg>
