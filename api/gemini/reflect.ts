@@ -4,28 +4,29 @@ import {
   MODEL_FALLBACK_LADDER,
   isRecoverableGeminiError,
   perfLog,
-  parseRequestBody,
+  readJsonBody,
+  sendJson,
   type ChatMessage,
 } from '../_gemini';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
-    return res.status(405).json({ error: 'Method Not Allowed' });
+    return sendJson(res, 405, { error: 'Method Not Allowed' });
   }
 
   const reqStart = Date.now();
   perfLog('backend request received');
 
   try {
-    const body = parseRequestBody(req);
+    const body = await readJsonBody(req);
     const prompt = typeof body.prompt === 'string' ? body.prompt.trim() : '';
     const history: ChatMessage[] = Array.isArray(body.history) ? body.history : [];
     const mode = typeof body.mode === 'string' ? body.mode : 'reflect';
     const streamRequested = body.stream !== false;
 
     if (!prompt) {
-      return res.status(400).json({ error: 'A valid non-empty "prompt" is required.' });
+      return sendJson(res, 400, { error: 'A valid non-empty "prompt" is required.' });
     }
 
     const ai = getGenAI();
@@ -98,6 +99,7 @@ RULES:
     });
 
     if (streamRequested) {
+      res.statusCode = 200;
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache, no-transform');
       res.setHeader('Connection', 'keep-alive');
@@ -168,7 +170,7 @@ RULES:
 
     perfLog(`Gemini response received with model ${result.modelUsed}`, Date.now() - reqStart);
 
-    return res.status(200).json({
+    return sendJson(res, 200, {
       reply: result.text,
       modelUsed: result.modelUsed,
       timestamp: new Date().toISOString(),
@@ -177,7 +179,7 @@ RULES:
     console.error('Error in /api/gemini/reflect:', error);
     const message = error?.message || 'Failed to generate reflection response.';
     const isKeyMissing = message.includes('GEMINI_API_KEY');
-    return res.status(isKeyMissing ? 503 : 500).json({
+    return sendJson(res, isKeyMissing ? 503 : 500, {
       error: message,
       code: isKeyMissing ? 'API_KEY_MISSING' : 'GENERATION_FAILED',
     });

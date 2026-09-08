@@ -1,21 +1,22 @@
 import {
   getGenAI,
   generateContentWithFallback,
-  parseRequestBody,
+  readJsonBody,
+  sendJson,
 } from '../_gemini';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
-    return res.status(405).json({ error: 'Method Not Allowed' });
+    return sendJson(res, 405, { error: 'Method Not Allowed' });
   }
 
   try {
-    const body = parseRequestBody(req);
+    const body = await readJsonBody(req);
     const entry = typeof body.entry === 'string' ? body.entry.trim() : '';
 
     if (!entry) {
-      return res.status(200).json({ title: 'New Reflection' });
+      return sendJson(res, 200, { title: 'New Reflection' });
     }
 
     const ai = getGenAI();
@@ -27,12 +28,12 @@ export default async function handler(req: any, res: any) {
     });
 
     const cleanTitle = result.text.replace(/^["'\s]+|["'\s]+$/g, '').slice(0, 60);
-    return res.status(200).json({
+    return sendJson(res, 200, {
       title: cleanTitle || 'Daily Reflection',
       modelUsed: result.modelUsed,
     });
   } catch (err: any) {
     console.warn('Title generation failed, using fallback:', err?.message);
-    return res.status(200).json({ title: 'Daily Reflection' });
+    return sendJson(res, 200, { title: 'Daily Reflection' });
   }
 }

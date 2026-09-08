@@ -1,21 +1,22 @@
 import {
   getGenAI,
   generateContentWithFallback,
-  parseRequestBody,
+  readJsonBody,
+  sendJson,
 } from '../_gemini';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
-    return res.status(405).json({ error: 'Method Not Allowed' });
+    return sendJson(res, 405, { error: 'Method Not Allowed' });
   }
 
   try {
-    const body = parseRequestBody(req);
+    const body = await readJsonBody(req);
     const reflectionText = typeof body.reflection === 'string' ? body.reflection.trim() : '';
 
     if (!reflectionText) {
-      return res.status(200).json({
+      return sendJson(res, 200, {
         habit: 'Drink a glass of water and take 3 deep breaths.',
         modelUsed: 'fallback',
       });
@@ -36,13 +37,13 @@ Requirements:
     });
 
     const cleanHabit = result.text.replace(/^["'\s•*-]+|["'\s]+$/g, '').trim();
-    return res.status(200).json({
+    return sendJson(res, 200, {
       habit: cleanHabit || 'Take 5 minutes this evening to step away from screens and rest.',
       modelUsed: result.modelUsed,
     });
   } catch (err: any) {
     console.warn('Micro-habit generation failed:', err?.message);
-    return res.status(200).json({
+    return sendJson(res, 200, {
       habit: 'Take a short 5-minute break and stretch your body.',
       modelUsed: 'fallback',
     });

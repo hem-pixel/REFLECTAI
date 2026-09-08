@@ -1,21 +1,22 @@
 import {
   getGenAI,
   generateContentWithFallback,
-  parseRequestBody,
+  readJsonBody,
+  sendJson,
 } from '../_gemini';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
-    return res.status(405).json({ error: 'Method Not Allowed' });
+    return sendJson(res, 405, { error: 'Method Not Allowed' });
   }
 
   try {
-    const body = parseRequestBody(req);
+    const body = await readJsonBody(req);
     const reflections = Array.isArray(body.reflections) ? body.reflections : [];
 
     if (reflections.length === 0) {
-      return res.status(200).json({
+      return sendJson(res, 200, {
         frequentTopics: ['College & Study', 'Daily Work', 'Rest & Energy'],
         observations: [
           'You are starting your reflection habit. Writing regularly helps clear your head.',
@@ -64,9 +65,9 @@ Format response as valid JSON matching this schema:
 
     try {
       const parsed = JSON.parse(result.text.replace(/```json\n?|```/g, '').trim());
-      return res.status(200).json(parsed);
+      return sendJson(res, 200, parsed);
     } catch {
-      return res.status(200).json({
+      return sendJson(res, 200, {
         frequentTopics: ['College & Work', 'Managing Energy', 'Daily Tasks'],
         positivePatterns: ['Taking time to pause and write how you feel.'],
         observations: [
@@ -77,7 +78,7 @@ Format response as valid JSON matching this schema:
     }
   } catch (err: any) {
     console.warn('AI insights generation failed:', err?.message);
-    return res.status(200).json({
+    return sendJson(res, 200, {
       frequentTopics: ['Daily Focus', 'Rest & Energy', 'College & Work'],
       observations: [
         'Writing down your thoughts regularly helps you feel calmer and clearer.',
