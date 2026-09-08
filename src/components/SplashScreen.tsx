@@ -110,54 +110,110 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
         }
       `}</style>
 
-      {/* Centered Circular Logo Container */}
-      <div className="relative flex items-center justify-center">
-        {/* Subtle breathing glow / soft ambient aura */}
-        <div
-          className={`absolute inset-0 rounded-full pointer-events-none transition-opacity duration-700 ease-in-out -z-10 ${
-            logoMounted && !reducedMotion ? 'reflectai-glow-anim' : ''
-          }`}
-          style={{
-            opacity: logoMounted ? 0.45 : 0,
-            filter: 'blur(26px)',
-            backgroundColor: '#c98a58',
-          }}
-          aria-hidden="true"
-        />
+      {/* Centered Brand Column */}
+      <div className="flex flex-col items-center justify-center text-center select-none px-4">
+        {/* Centered Circular Logo Container */}
+        <div className="relative flex items-center justify-center">
+          {/* Subtle breathing glow / soft ambient aura */}
+          <div
+            className={`absolute inset-0 rounded-full pointer-events-none transition-opacity duration-700 ease-in-out -z-10 ${
+              logoMounted && !reducedMotion ? 'reflectai-glow-anim' : ''
+            }`}
+            style={{
+              opacity: logoMounted ? 0.45 : 0,
+              filter: 'blur(26px)',
+              backgroundColor: '#c98a58',
+            }}
+            aria-hidden="true"
+          />
 
-        {/* Circular Logo Element */}
-        <div
-          className={`w-[130px] h-[130px] sm:w-[160px] sm:h-[160px] md:w-[185px] md:h-[185px] aspect-square rounded-full flex items-center justify-center select-none ${
-            logoMounted && !reducedMotion ? 'reflectai-breathe-anim' : ''
-          }`}
+          {/* Circular Logo Element */}
+          <div
+            className={`w-[125px] h-[125px] sm:w-[155px] sm:h-[155px] md:w-[175px] md:h-[175px] aspect-square rounded-full flex items-center justify-center select-none ${
+              logoMounted && !reducedMotion ? 'reflectai-breathe-anim' : ''
+            }`}
+            style={{
+              opacity: logoMounted ? 1 : 0,
+              transform: reducedMotion
+                ? 'none'
+                : logoMounted
+                ? 'scale(1)'
+                : 'scale(0.90)',
+              transition: reducedMotion
+                ? 'opacity 500ms ease-out'
+                : 'opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+          >
+            <img
+              id="reflectai-splash-logo-img"
+              src={imgSrc}
+              alt="ReflectAI"
+              onError={() => {
+                // Fallback cascade: SVG -> PNG -> static public path
+                if (imgSrc !== '/reflectai-circle-logo.png') {
+                  setImgSrc('/reflectai-circle-logo.png');
+                }
+              }}
+              className="w-full h-full object-contain rounded-full select-none pointer-events-none"
+              style={{
+                aspectRatio: '1 / 1',
+                filter: 'drop-shadow(0 6px 16px rgba(139, 69, 19, 0.16))',
+              }}
+            />
+          </div>
+        </div>
+
+        {/* ReflectAI Brand Name below logo */}
+        <h1
+          id="reflectai-splash-title"
+          className="font-sans text-3xl sm:text-4xl md:text-[40px] font-bold tracking-tight text-[#2B1E16] mt-6 sm:mt-7 flex items-center justify-center leading-none"
           style={{
             opacity: logoMounted ? 1 : 0,
             transform: reducedMotion
               ? 'none'
               : logoMounted
-              ? 'scale(1)'
-              : 'scale(0.90)',
+              ? 'translateY(0)'
+              : 'translateY(8px)',
             transition: reducedMotion
               ? 'opacity 500ms ease-out'
-              : 'opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1)',
+              : 'opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          <img
-            id="reflectai-splash-logo-img"
-            src={imgSrc}
-            alt="ReflectAI"
-            onError={() => {
-              // Fallback cascade: SVG -> PNG -> static public path
-              if (imgSrc !== '/reflectai-circle-logo.png') {
-                setImgSrc('/reflectai-circle-logo.png');
-              }
-            }}
-            className="w-full h-full object-contain rounded-full select-none pointer-events-none"
-            style={{
-              aspectRatio: '1 / 1',
-              filter: 'drop-shadow(0 6px 16px rgba(139, 69, 19, 0.16))',
-            }}
-          />
+          <span>Reflect</span>
+          <span className="text-[#8B4513]">AI</span>
+        </h1>
+
+        {/* Brand Tagline: THINK • REFLECT • GROW */}
+        <p
+          id="reflectai-splash-tagline"
+          className="font-sans text-[11px] sm:text-xs md:text-[13px] font-semibold tracking-[0.26em] uppercase text-[#A67C52] mt-3 sm:mt-3.5"
+          style={{
+            opacity: logoMounted ? 0.9 : 0,
+            transform: reducedMotion
+              ? 'none'
+              : logoMounted
+              ? 'translateY(0)'
+              : 'translateY(6px)',
+            transition: reducedMotion
+              ? 'opacity 550ms ease-out 80ms'
+              : 'opacity 550ms cubic-bezier(0.16, 1, 0.3, 1) 80ms, transform 550ms cubic-bezier(0.16, 1, 0.3, 1) 80ms',
+          }}
+        >
+          THINK <span className="text-[#8B4513]/50">•</span> REFLECT <span className="text-[#8B4513]/50">•</span> GROW
+        </p>
+
+        {/* 3 subtle brand dots matching reference image */}
+        <div
+          className="flex items-center gap-2 mt-4 sm:mt-5"
+          style={{
+            opacity: logoMounted ? 0.8 : 0,
+            transition: 'opacity 600ms ease-out 160ms',
+          }}
+          aria-hidden="true"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-[#8B4513]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#C99C75]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#E5D2BE]" />
         </div>
       </div>
     </div>

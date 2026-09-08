@@ -40,11 +40,24 @@
     <div id="root">
       <!-- 0ms Immediate Startup UI: Rendered by browser before JavaScript bundle finishes loading -->
       <div id="initial-splash-fallback">
-        <img
-          src="/reflectai-circle-logo.svg"
-          alt="ReflectAI"
-          style="width: 160px; height: 160px; max-width: 75vw; max-height: 75vw; object-fit: contain; border-radius: 50%; display: block; filter: drop-shadow(0 6px 16px rgba(139, 69, 19, 0.16));"
-        />
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 16px;">
+          <img
+            src="/reflectai-circle-logo.svg"
+            alt="ReflectAI"
+            style="width: 155px; height: 155px; max-width: 65vw; max-height: 65vw; object-fit: contain; border-radius: 50%; display: block; filter: drop-shadow(0 6px 16px rgba(139, 69, 19, 0.16));"
+          />
+          <div style="font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; font-size: 36px; font-weight: 700; margin-top: 24px; color: #2B1E16; letter-spacing: -0.02em; line-height: 1;">
+            Reflect<span style="color: #8B4513;">AI</span>
+          </div>
+          <div style="font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; font-size: 12px; font-weight: 600; margin-top: 14px; color: #A67C52; letter-spacing: 0.26em; text-transform: uppercase;">
+            THINK • REFLECT • GROW
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-top: 18px;">
+            <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #8B4513; display: inline-block;"></span>
+            <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #C99C75; display: inline-block;"></span>
+            <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #E5D2BE; display: inline-block;"></span>
+          </div>
+        </div>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
